@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    :root { --accent:#00A3FF; --accent-strong:#28B4FF; --accent-ink:#00131F; --accent-rgb:0,163,255; --surface-0:#101319; --surface-1:#181F2A; }
+    body { margin: 0; background: var(--surface-0); color: #EBEDEF; font-family: 'Manrope', system-ui, sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-strong); }
+    input { font-family: inherit; }
+    ::selection { background: rgba(var(--accent-rgb),0.35); }
+    @keyframes apex-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.22,.61,.28,1), transform .7s cubic-bezier(.22,.61,.28,1); }
+    [data-reveal].rv-in { opacity: 1; transform: none; }
+    [data-svc] { transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+    [data-svc] img { transition: transform .55s cubic-bezier(.22,.61,.28,1); }
+    [data-svc]:hover img { transform: scale(1.055); }
+    [data-pkg] { position: relative; overflow: hidden; }
+    [data-pkg]::after { content: ''; position: absolute; top: 0; left: 0; width: 55%; height: 240%; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.16) 50%, transparent 100%); transform: translate(-160%, -55%) rotate(9deg); pointer-events: none; }
+    [data-pkg]:hover::after { transform: translate(360%, 55%) rotate(9deg); transition: transform 1.5s cubic-bezier(.22,.61,.28,1); }
+    @media (prefers-reduced-motion: reduce) { [data-pkg]::after { display: none; } }
+    [data-baslider] * { pointer-events: none; }
+    @keyframes apex-hs-pulse { 0% { transform: scale(1); opacity: 0.55; } 70% { transform: scale(2.6); opacity: 0; } 100% { transform: scale(2.6); opacity: 0; } }
+    [data-hotspot] { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; padding: 0; border: none; background: transparent; cursor: pointer; z-index: 3; }
+    [data-hotspot] .hs-ring { position: absolute; inset: 0; border-radius: 50%; background: var(--accent); animation: apex-hs-pulse 2.2s cubic-bezier(.22,.61,.28,1) infinite; }
+    [data-hotspot] .hs-dot { position: absolute; inset: 6px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.4); transition: transform .2s ease; }
+    [data-hotspot]:hover .hs-dot, [data-hotspot]:focus-visible .hs-dot { transform: scale(1.18); }
+    [data-hotspot] .hs-card { position: absolute; left: 50%; width: 236px; transform: translateX(-50%) translateY(10px) scale(0.96); transform-origin: center bottom; opacity: 0; pointer-events: none; transition: opacity .3s cubic-bezier(.22,.61,.28,1), transform .38s cubic-bezier(.34,1.4,.5,1); background: linear-gradient(180deg, rgba(20,27,36,0.92), rgba(11,15,21,0.94)); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 16px 18px 17px; box-shadow: 0 24px 60px -22px rgba(0,0,0,0.9), 0 0 0 1px rgba(var(--accent-rgb),0.10) inset, 0 1px 0 rgba(255,255,255,0.06) inset; overflow: hidden; z-index: 4; }
+    [data-hotspot] .hs-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.85; }
+    [data-hotspot] .hs-line { position: absolute; left: 50%; width: 1.5px; height: 12px; margin-left: -0.75px; background: var(--accent); opacity: 0; transition: opacity .25s ease; }
+    [data-hotspot][data-side="top"] .hs-line { bottom: 100%; }
+    [data-hotspot][data-side="bottom"] .hs-line { top: 100%; }
+    [data-hotspot][data-side="top"] .hs-card { bottom: calc(100% + 12px); }
+    [data-hotspot][data-side="bottom"] .hs-card { top: calc(100% + 12px); }
+    [data-hotspot]:hover .hs-card, [data-hotspot]:focus-within .hs-card, [data-hotspot].hs-open .hs-card { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0) scale(1); }
+    [data-hotspot]:hover .hs-line, [data-hotspot]:focus-within .hs-line, [data-hotspot].hs-open .hs-line { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { [data-hotspot] .hs-ring { animation: none; opacity: 0.4; } }
+    @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1 !important; transform: none !important; } }
+    [data-nav-toggle] { display: none; }
+    @media (max-width: 760px) {
+      [data-nav-links] { display: none !important; }
+      [data-nav-toggle] { display: inline-flex !important; }
+      [data-hotspot] { display: none !important; }
+      [data-stats-grid] { grid-template-columns: 1fr !important; }
+      [data-stats-grid] > div { text-align: left !important; padding: 20px 0 !important; border-left: none !important; border-top: 1px solid rgba(0,19,31,0.15); }
+      [data-stats-grid] > div:first-child { border-top: none; padding-top: 0 !important; }
+      [data-stats-grid] > div > div:first-child { justify-content: flex-start !important; }
+      [data-stats-grid] p { margin-left: 0 !important; margin-right: 0 !important; }
+      [data-focus-grid] { grid-template-columns: 1fr !important; }
+      [data-hero-shot] { padding-bottom: 40px !important; }
+      [data-hero-shot] img { height: 240px !important; }
+      [data-svc-grid] { gap: 12px !important; }
+      [data-svc] { flex-direction: row !important; align-items: stretch; }
+      [data-svc] > div:first-child { height: auto !important; width: 116px !important; flex-shrink: 0; }
+      [data-svc] > div:last-child { padding: 16px 16px 16px 18px !important; gap: 6px !important; justify-content: center; }
+      [data-svc] h3 { font-size: 1.05rem !important; }
+      [data-svc] p { font-size: 13px !important; }
+      [data-gal-grid] { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+      [data-gal-grid] [data-baslider] { height: 190px !important; }
+      [data-gal-grid] > div > div:last-child { padding: 12px 14px !important; }
+      [data-gal-grid] > div > div:last-child > div { font-size: 13px !important; }
+    }
+    @media (min-width: 761px) { [data-nav-menu] { display: none !important; } }
+  </style>
+</helmet>
+
+<div style="width:100%;overflow-x:hidden;">
+
+  <!-- NAV -->
+  <div style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(8,9,11,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#topC" style="display:flex;align-items:center;gap:10px;color:#EBEDEF;">
+        <span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.01em;">APEX</span>
+        <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:0.2em;color:#868E97;text-transform:uppercase;">Detailing Studio</span>
+      </a>
+      <div data-nav-links style="display:flex;align-items:center;gap:24px;">
+        <a href="#uslugeC" style="color:#AEB4BB;font-size:13.5px;font-weight:600;">Usluge</a>
+        <a href="#paketiC" style="color:#AEB4BB;font-size:13.5px;font-weight:600;">Paketi</a>
+        <a href="#galerijaC" style="color:#AEB4BB;font-size:13.5px;font-weight:600;">Galerija</a>
+        <a href="#lokacijaC" style="color:#AEB4BB;font-size:13.5px;font-weight:600;">Lokacija</a>
+        <a href="#kvizC" style="background:var(--accent);color:var(--accent-ink);padding:11px 20px;border-radius:8px;font-size:13.5px;font-weight:700;transition:transform .25s cubic-bezier(.22,.61,.28,1),background .25s ease,box-shadow .25s ease;" style-hover="background:var(--accent-strong);transform:translateY(-2px);box-shadow:0 12px 26px -12px rgba(var(--accent-rgb),0.6);">Zakažite termin</a>
+      </div>
+      <button data-nav-toggle onClick="{{ toggleNav }}" aria-label="Meni" style="align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,0.16);border-radius:9px;background:transparent;cursor:pointer;color:#EBEDEF;padding:0;">
+        <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></sc-if>
+        <sc-if value="{{ navClosed }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"></line><line x1="4" y1="14" x2="20" y2="14"></line></svg></sc-if>
+      </button>
+    </div>
+    <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+    <div data-nav-menu style="border-top:1px solid rgba(255,255,255,0.08);background:rgba(8,9,11,0.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);">
+      <div style="max-width:1280px;margin:0 auto;padding:12px 24px 20px;display:flex;flex-direction:column;gap:2px;">
+        <a href="#uslugeC" onClick="{{ closeNav }}" style="color:#D4D8DD;font-size:16px;font-weight:600;padding:13px 2px;border-bottom:1px solid rgba(255,255,255,0.06);">Usluge</a>
+        <a href="#paketiC" onClick="{{ closeNav }}" style="color:#D4D8DD;font-size:16px;font-weight:600;padding:13px 2px;border-bottom:1px solid rgba(255,255,255,0.06);">Paketi</a>
+        <a href="#galerijaC" onClick="{{ closeNav }}" style="color:#D4D8DD;font-size:16px;font-weight:600;padding:13px 2px;border-bottom:1px solid rgba(255,255,255,0.06);">Galerija</a>
+        <a href="#lokacijaC" onClick="{{ closeNav }}" style="color:#D4D8DD;font-size:16px;font-weight:600;padding:13px 2px;">Lokacija</a>
+        <a href="#kvizC" onClick="{{ closeNav }}" style="margin-top:12px;background:var(--accent);color:var(--accent-ink);padding:14px 20px;border-radius:8px;font-size:15px;font-weight:700;text-align:center;">Zakažite termin</a>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+  <div style="height:69px;"></div>
+
+  <!-- HERO -->
+  <div id="topC" style="scroll-margin-top:80px;background:radial-gradient(1100px 520px at 50% -160px,rgba(var(--accent-rgb),0.07),transparent 66%);background-repeat:no-repeat;">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) 24px clamp(40px,5vw,56px);">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:26px;">Novi Beograd &middot; Premium detailing</div>
+      <h1 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2.8rem,7.5vw,5.8rem);line-height:0.98;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 26px;max-width:16ch;">Vratite automobilu izgled iz salona</h1>
+      <div style="display:flex;gap:38px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;">
+        <p style="font-size:clamp(1.02rem,1.4vw,1.2rem);color:#A3AAB2;max-width:50ch;margin:0;">Vremenom lak izgubi dubinu, enterijer izgubi miris, a farovi bistrinu. Sve to vraćamo. Radimo u zatvorenom studiju, a auto ne preuzimate dok ga zajedno ne pogledamo. Platićete tek kada budete zadovoljni onim što vidite.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <a href="#kvizC" style="background:var(--accent);color:var(--accent-ink);padding:16px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:transform .25s cubic-bezier(.22,.61,.28,1),background .25s ease,box-shadow .25s ease;" style-hover="background:var(--accent-strong);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(var(--accent-rgb),0.65);">Procenite svoj auto za 1 minut</a>
+          <a href="#uslugeC" style="border:1px solid rgba(255,255,255,0.2);color:#EBEDEF;padding:16px 30px;border-radius:8px;font-size:15px;font-weight:600;transition:transform .25s cubic-bezier(.22,.61,.28,1),border-color .25s ease,color .25s ease;" style-hover="border-color:var(--accent);color:var(--accent-strong);transform:translateY(-2px);">Usluge</a>
+        </div>
+      </div>
+    </div>
+    <div data-hero-shot style="max-width:1280px;margin:0 auto;padding:0 24px clamp(56px,8vw,96px);">
+      <div style="position:relative;">
+        <div style="border-radius:16px;border:1px solid rgba(255,255,255,0.09);overflow:hidden;">
+          <img src="assets/hero-studio.jpg" alt="APEX Detailing Studio - sivi sportski auto pod heksagonalnim svetlima" style="display:block;width:100%;height:clamp(280px,42vw,560px);object-fit:cover;">
+        </div>
+        <button data-hotspot data-side="top" aria-label="Eksterijer i lak" style="left:35%;top:50%;"><span class="hs-ring"></span><span class="hs-dot"></span><span class="hs-line"></span><span class="hs-card"><span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Eksterijer i lak</span><span style="display:block;color:#D4D8DD;font-size:13px;line-height:1.5;">Višeslojno poliranje uklanja ogrebotine, a keramička zaštita dugo čuva dubok sjaj laka.</span></span></button>
+        <button data-hotspot data-side="top" aria-label="Farovi" style="left:44%;top:57%;"><span class="hs-ring"></span><span class="hs-dot"></span><span class="hs-line"></span><span class="hs-card"><span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Farovi</span><span style="display:block;color:#D4D8DD;font-size:13px;line-height:1.5;">Poliranje zamućenja i žutila uz UV zaštitu vraća jasan i jači snop svetla.</span></span></button>
+        <button data-hotspot data-side="top" aria-label="Felne" style="left:58%;top:70%;"><span class="hs-ring"></span><span class="hs-dot"></span><span class="hs-line"></span><span class="hs-card"><span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Felne</span><span style="display:block;color:#D4D8DD;font-size:13px;line-height:1.5;">Dubinsko čišćenje i zaštita felni od kočione prašine, prljavštine i korozije.</span></span></button>
+        <button data-hotspot data-side="bottom" aria-label="Stakla" style="left:60%;top:44%;"><span class="hs-ring"></span><span class="hs-dot"></span><span class="hs-line"></span><span class="hs-card"><span style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;">Stakla</span><span style="display:block;color:#D4D8DD;font-size:13px;line-height:1.5;">Hidrofobni premaz odbija vodu i poboljšava vidljivost tokom kiše i pljuskova.</span></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS (accent band) -->
+  <div ref="{{ statsRef }}" style="background:var(--accent);color:var(--accent-ink);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,88px) 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;" data-stats-grid>
+      <div style="text-align:center;padding:0 clamp(20px,3vw,44px);">
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:8px;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2.6rem,6vw,4.4rem);line-height:0.85;letter-spacing:-0.03em;">{{ years }}</span></div>
+        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;margin:18px 0 8px;">Godina rada</div>
+        <p style="color:#0A2233;font-size:14.5px;margin:0 auto;max-width:34ch;font-weight:500;">Isti standard od prvog auta.</p>
+      </div>
+      <div style="text-align:center;padding:0 clamp(20px,3vw,44px);border-left:1px solid rgba(0,19,31,0.16);">
+        <div style="display:flex;align-items:center;justify-content:center;gap:2px;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2.6rem,6vw,4.4rem);line-height:0.85;letter-spacing:-0.03em;">{{ vehicles }}</span><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2.6rem,6vw,4.4rem);line-height:0.85;letter-spacing:-0.03em;">+</span></div>
+        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;margin:18px 0 8px;">Tretiranih vozila</div>
+        <p style="color:#0A2233;font-size:14.5px;margin:0 auto;max-width:34ch;font-weight:500;">Svaki vlasnik je pregledao svoj auto sa nama pre nego što ga je odvezao kući.</p>
+      </div>
+      <div style="text-align:center;padding:0 clamp(20px,3vw,44px);border-left:1px solid rgba(0,19,31,0.16);">
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:8px;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2.6rem,6vw,4.4rem);line-height:0.85;letter-spacing:-0.03em;">{{ services }}</span></div>
+        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;margin:18px 0 8px;">Usluga u ponudi</div>
+        <p style="color:#0A2233;font-size:14.5px;margin:0 auto;max-width:34ch;font-weight:500;">Od dubinskog pranja do keramike, <span style="white-space:nowrap;">folija i restauracije.</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- USLUGE -->
+  <div id="uslugeC" style="scroll-margin-top:80px;border-top:1px solid rgba(255,255,255,0.08);">
+    <div data-reveal style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Šta radimo</div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 clamp(40px,6vw,64px);">Usluge koje nudimo</h2>
+      <div data-svc-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));grid-auto-rows:1fr;gap:20px;">
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-enterijer.jpg" alt="Dubinsko čišćenje enterijera" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Čišćenje i dubinsko pranje</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Auto koji izgleda i miriše kao nov, unutra i spolja. Vadimo prljavštinu tamo gde kućni usisivač ne stiže.</p></div>
+        </div>
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-poliranje.jpg" alt="Poliranje laka" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Poliranje i korekcija laka</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Ogrebotine i mutnoća nestaju, a boji se vraća dubina koju verovatno niste videli od kupovine. Lak ponovo izgleda ravno i puno.</p></div>
+        </div>
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-keramika.jpg" alt="Keramička zaštita vozila" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Keramička zaštita i folije</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Sjaj ostaje zaštićen godinama. Voda se skuplja i sklizne sama, pranje traje kraće, a lak duže zadrži izgled kao nov.</p></div>
+        </div>
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-farovi.jpg" alt="Poliranje i restauracija farova" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Poliranje i restauracija farova</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Žuti i mutni farovi ponovo bistri kao fabrički. Bolje vidiš noću, a auto deluje mlađe.</p></div>
+        </div>
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-stakla.jpg" alt="Tretmani i zaštita stakala" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Tretmani i zaštita stakala</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Kiša klizi sama sa šoferke i skidamo kamenac koji zamagljuje staklo.</p></div>
+        </div>
+        <div data-svc style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;" style-hover="transform:translateY(-5px);border-color:rgba(var(--accent-rgb),0.4);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.55);">
+          <div style="height:180px;background:#0D1015;"><img src="assets/usluga-felne.jpg" alt="Detailing felni i motora" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div style="padding:26px;display:flex;flex-direction:column;gap:10px;flex:1;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;margin:0;">Detailing felni i motora</h3><p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;">Felne čiste do sjaja i zaštićene od kočione prašine, motorni prostor opran i sređen.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAKETI -->
+  <div id="paketiC" style="scroll-margin-top:80px;background:var(--surface-1);border-top:1px solid rgba(255,255,255,0.08);background-image:radial-gradient(900px 420px at 82% -120px,rgba(var(--accent-rgb),0.07),transparent 70%);">
+    <div data-reveal style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Paketi</div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 12px;color:#EBEDEF;">Paket za svačiju potrebu</h2>
+      <p style="color:#A3AAB2;max-width:56ch;margin:0 0 clamp(40px,6vw,56px);">Svaki paket pokriva jednu tipičnu potrebu, od osveženja do potpune restauracije. Možete uzeti i pojedinačne usluge, ali paketi nose bolju vrednost. Okvirnu cenu dajemo na pozivu čim popunite kviz.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;align-items:stretch;">
+        <div data-pkg style="position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:30px;display:flex;flex-direction:column;background:rgba(255,255,255,0.02);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.45);">
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.3rem;margin:0 0 6px;color:#EBEDEF;">Osnovni sjaj</h3>
+          <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Kad auto samo treba da zablista</div>
+          <div style="display:flex;align-items:baseline;gap:7px;margin-bottom:20px;"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.55rem;color:#EBEDEF;line-height:1;">od 12.000</span><span style="font-size:13px;color:#8A8F96;font-weight:600;">din</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;color:#A3AAB2;font-size:14.5px;"><div>Premium pranje i dekontaminacija</div><div>Jednoslojni polir sjaja</div><div>Zaštita voskom</div><div>Brzo osveženje enterijera</div></div>
+        </div>
+        <div data-pkg style="position:relative;overflow:hidden;border:2px solid var(--accent);border-radius:14px;padding:30px;background:rgba(var(--accent-rgb),0.08);display:flex;flex-direction:column;transition:transform .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-5px);box-shadow:0 24px 52px -24px rgba(var(--accent-rgb),0.5);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;"><h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.3rem;margin:0;color:#EBEDEF;">Puna zaštita</h3><span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#EBEDEF;background:var(--accent);padding:4px 8px;border-radius:5px;">Najpopularnije</span></div>
+          <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Poliranje + keramika</div>
+          <div style="display:flex;align-items:baseline;gap:7px;margin-bottom:20px;"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.55rem;color:#EBEDEF;line-height:1;">od 45.000</span><span style="font-size:13px;color:#8A8F96;font-weight:600;">din</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;color:#C2C8CF;font-size:14.5px;"><div>Sve iz Osnovnog sjaja</div><div>Višeslojno poliranje laka</div><div>Keramička zaštita</div><div>Hidrofobna zaštita stakala</div><div>Zaštita felni</div></div>
+        </div>
+        <div data-pkg style="position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:30px;display:flex;flex-direction:column;background:rgba(255,255,255,0.02);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;" style-hover="transform:translateY(-5px);border-color:var(--accent);box-shadow:0 22px 46px -28px rgba(var(--accent-rgb),0.45);">
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.3rem;margin:0 0 6px;color:#EBEDEF;">Restauracija</h3>
+          <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Kad auto treba vratiti u život</div>
+          <div style="display:flex;align-items:baseline;gap:7px;margin-bottom:20px;"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.55rem;color:#EBEDEF;line-height:1;">od 70.000</span><span style="font-size:13px;color:#8A8F96;font-weight:600;">din</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;color:#A3AAB2;font-size:14.5px;"><div>Korekcija laka u više prolaza</div><div>Dubinski enterijer i eksterijer</div><div>Restauracija farova</div><div>Keramička zaštita</div></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:12.5px;color:#8A8F96;">* Okvirne cene, konačnu potvrđujemo posle dogovora oko obima posla.</div>
+      <div style="margin-top:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:24px 26px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:rgba(255,255,255,0.02);">
+        <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8A8F96;margin-right:4px;">Dodatno po želji</span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;"><span style="border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:8px 14px;font-size:13px;color:#AEB4BB;font-weight:600;">PPF folija</span><span style="border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:8px 14px;font-size:13px;color:#AEB4BB;font-weight:600;">Pranje motornog prostora</span><span style="border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:8px 14px;font-size:13px;color:#AEB4BB;font-weight:600;">Hemijsko čišćenje sedišta</span><span style="border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:8px 14px;font-size:13px;color:#AEB4BB;font-weight:600;">Uklanjanje dlaka ljubimaca</span><span style="border:1px solid rgba(255,255,255,0.16);border-radius:999px;padding:8px 14px;font-size:13px;color:#AEB4BB;font-weight:600;">Dubinsko usisavanje</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALERIJA -->
+  <div id="galerijaC" data-reveal style="scroll-margin-top:80px;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Pre i posle</div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 12px;">Rezultat koji se vidi</h2>
+      <p style="color:#A3AAB2;max-width:56ch;margin:0 0 clamp(40px,6vw,56px);">Prevucite klizač i vidite razliku na istom vozilu, pre i posle našeg rada. Bez filtera i montaže, samo drugačije svetlo i pažnja na svakom detalju.</p>
+      <div data-gal-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-audi-posle.jpg" alt="Audi A6 posle poliranja" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-audi-pre.jpg" alt="Audi A6 pre poliranja" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">Audi A6 · korekcija laka</div></div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-bmw-posle.jpg" alt="BMW Serija 3 posle keramike" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-bmw-pre.jpg" alt="BMW Serija 3 pre keramike" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">BMW Serija 3 · keramika</div></div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-vw-posle.jpg" alt="VW Golf posle restauracije farova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-vw-pre.jpg" alt="VW Golf pre restauracije farova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">VW Golf · restauracija farova</div></div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-mercedes-posle.jpg" alt="Mercedes C posle dubinskog enterijera" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-mercedes-pre.jpg" alt="Mercedes C pre dubinskog enterijera" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">Mercedes C · dubinski enterijer</div></div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-bmwm5-posle.jpg" alt="BMW M5 posle čišćenja motornog prostora" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-bmwm5-pre.jpg" alt="BMW M5 pre čišćenja motornog prostora" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">BMW M5 · čišćenje motornog prostora</div></div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+            <img src="assets/gal-porsche-posle.jpg" alt="Porsche 718 Cayman posle čišćenja i zaštite felni" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
+              <img src="assets/gal-porsche-pre.jpg" alt="Porsche 718 Cayman pre čišćenja i zaštite felni" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div data-ba-line style="position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,0.92);box-shadow:0 0 0 1px rgba(0,0,0,0.25);"></div>
+            <div data-ba-grip style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.97);color:#0D1520;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:900;font-size:16px;box-shadow:0 4px 14px rgba(0,0,0,0.5);">&#8596;</div>
+          </div>
+          <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">Porsche 718 Cayman · čišćenje i zaštita felni</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENZIJE -->
+  <div style="border-top:1px solid rgba(255,255,255,0.08);overflow:hidden;background:var(--surface-1);">
+    <div data-reveal style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px clamp(36px,5vw,52px);">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Recenzije</div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0;">Šta kažu vozači</h2>
+    </div>
+    <div style="overflow:hidden;padding:0 0 clamp(64px,9vw,112px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);">
+      <div style="display:flex;width:max-content;animation:apex-marquee 55s linear infinite;padding:0 24px;" style-hover="animation-play-state:paused;">
+        <div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Predali su mi auto kao da je nov. Nijedne kružne ogrebotine, boja dublja nego kad sam ga kupio.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">MJ</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Miloš J.</div><div style="color:#868E97;font-size:13px;">Audi A6</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Keramika drži već godinu dana, voda spada sama. Pranje mi traje duplo kraće.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">AK</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Ana K.</div><div style="color:#868E97;font-size:13px;">VW Golf</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Farovi su bili žuti i mutni, sad svetle kao fabrički. Vožnja noću je druga priča.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">NP</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Nikola P.</div><div style="color:#868E97;font-size:13px;">BMW Serija 3</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Enterijer je bio katastrofa, sad izgleda kao salon. Skinuli su svaku dlaku.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">JM</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Jelena M.</div><div style="color:#868E97;font-size:13px;">Škoda Octavia</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Profesionalci. Sve su mi pokazali pod svetlom, bez skrivanja. Iskrena preporuka.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">SV</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Stefan V.</div><div style="color:#868E97;font-size:13px;">Mercedes C</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Doveo sam zapušten auto, izašao je bolji nego što sam očekivao. Vredi svaki dinar.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">MT</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Marko T.</div><div style="color:#868E97;font-size:13px;">Peugeot 3008</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Predali su mi auto kao da je nov. Nijedne kružne ogrebotine, boja dublja nego kad sam ga kupio.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">MJ</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Miloš J.</div><div style="color:#868E97;font-size:13px;">Audi A6</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Keramika drži već godinu dana, voda spada sama. Pranje mi traje duplo kraće.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">AK</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Ana K.</div><div style="color:#868E97;font-size:13px;">VW Golf</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Farovi su bili žuti i mutni, sad svetle kao fabrički. Vožnja noću je druga priča.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">NP</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Nikola P.</div><div style="color:#868E97;font-size:13px;">BMW Serija 3</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Enterijer je bio katastrofa, sad izgleda kao salon. Skinuli su svaku dlaku.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">JM</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Jelena M.</div><div style="color:#868E97;font-size:13px;">Škoda Octavia</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Profesionalci. Sve su mi pokazali pod svetlom, bez skrivanja. Iskrena preporuka.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">SV</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Stefan V.</div><div style="color:#868E97;font-size:13px;">Mercedes C</div></div></div></div><div style="flex:0 0 auto;width:340px;margin-right:20px;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px;background:rgba(255,255,255,0.01);display:flex;flex-direction:column;gap:16px;white-space:normal;"><div style="color:#C9A15A;font-size:15px;letter-spacing:3px;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="color:#D3D8DD;font-size:15px;line-height:1.6;margin:0;flex:1;">Doveo sam zapušten auto, izašao je bolji nego što sam očekivao. Vredi svaki dinar.</p><div style="display:flex;align-items:center;gap:12px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(var(--accent-rgb),0.14);color:var(--accent-strong);display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;flex-shrink:0;">MT</div><div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:14.5px;">Marko T.</div><div style="color:#868E97;font-size:13px;">Peugeot 3008</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZATVARANJE / GARANCIJA -->
+  <div style="border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Garancija</div>
+      <h2 data-reveal style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 clamp(32px,5vw,44px);max-width:20ch;text-wrap:balance;">Rezultat proveravate sa nama</h2>
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;align-items:stretch;">
+        <div style="border:1px solid rgba(var(--accent-rgb),0.35);background:rgba(var(--accent-rgb),0.05);border-radius:14px;padding:clamp(28px,4vw,40px);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L20 6 V12 C20 17 16.5 19.7 12 21 C7.5 19.7 4 17 4 12 V6 Z"></path><path d="M9 12 L11 14 L15 9.5"></path></svg>
+            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);">Naša reč</span>
+          </div>
+          <p style="font-size:1.05rem;color:#D3D8DD;margin:0;font-weight:400;line-height:1.65;text-wrap:pretty;">Na primopredaji zajedno pregledamo svaki deo vozila. Ako primetite bilo kakav propust, ispravljamo ga isti dan bez doplate. Ne puštamo vozilo dok i vi niste zadovoljni.</p>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:clamp(28px,4vw,40px);display:flex;flex-direction:column;justify-content:center;">
+          <p style="color:#A3AAB2;font-size:15.5px;margin:0 0 24px;max-width:46ch;line-height:1.6;">Ogrebotine ne stoje u mestu. Što duže vozite neispravljen lak, dublje ulaze, a dođe trenutak kada ni poliranje ne može sve da vrati.</p>
+          <a href="#kvizC" style="align-self:flex-start;background:var(--accent);color:var(--accent-ink);padding:16px 30px;border-radius:8px;font-size:15px;font-weight:700;transition:transform .25s cubic-bezier(.22,.61,.28,1),background .25s ease,box-shadow .25s ease;" style-hover="background:var(--accent-strong);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(var(--accent-rgb),0.65);">Procenite svoj auto za 1 minut</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KVIZ -->
+  <div id="kvizC" data-reveal style="scroll-margin-top:80px;border-top:1px solid rgba(255,255,255,0.08);background:var(--surface-1);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="text-align:center;margin-bottom:clamp(36px,5vw,52px);">
+        <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Procena po meri</div>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 auto 24px;max-width:22ch;">Uradite 1-minutni kviz, ponudu vam dajemo u najkraćem roku</h2>
+        <p style="color:#A3AAB2;max-width:54ch;margin:0 auto;text-wrap:balance;">Nekoliko pitanja o vašem autu i onome što vam smeta. Mi vas nazovemo, predložimo tretman i cenu, i ako vam odgovara, dogovorimo termin. Bez obaveze i bez pritiska.</p>
+      </div>
+      <div style="max-width:none;margin:0 auto;border:1px solid rgba(255,255,255,0.1);border-radius:16px;background:#10151C;padding:clamp(26px,4vw,44px) clamp(34px,5vw,60px);">
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+            <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;">{{ stepLabel }}</span>
+            <div style="flex:1;height:3px;margin-left:20px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="height:100%;background:var(--accent);border-radius:2px;transition:width .35s ease;width:{{ progressWidth }};"></div></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isFocus }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.35rem;margin:0 0 8px;">Šta vam je potrebno?</h3>
+            <p style="color:#8990A0;font-size:14px;margin:0 0 22px;">Izaberite jednu ili više opcija.</p>
+            <div data-focus-grid style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;">
+              <sc-for list="{{ focusOpts }}" as="opt" hint-placeholder-count="6"><button data-value="{{ opt.label }}" onClick="{{ onFocusClick }}" style="{{ opt.style }}"><span style="display:flex;flex-direction:column;gap:5px;padding-right:8px;"><span style="font-weight:700;font-size:15px;line-height:1.25;">{{ opt.label }}</span><span style="font-weight:500;font-size:12.5px;color:#8990A0;line-height:1.4;">{{ opt.sub }}</span></span><span style="{{ opt.markStyle }}"></span></button></sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isVehicle }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:26px;">
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.35rem;margin:0;">Osnovni podaci o vozilu</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+              <div><label style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Marka i model</label><input type="text" value="{{ makeModel }}" onInput="{{ onMakeModelInput }}" placeholder="npr. Audi A6" style="width:100%;background:#0B0C0F;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px;color:#EBEDEF;font-size:15px;outline:none;" style-focus="border-color:var(--accent);"></div>
+              <div><label style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Godište</label><input type="text" value="{{ year }}" onInput="{{ onYearInput }}" placeholder="npr. 2018" style="width:100%;background:#0B0C0F;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px;color:#EBEDEF;font-size:15px;outline:none;" style-focus="border-color:var(--accent);"></div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isService }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:30px;">
+            <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);">{{ serviceHead }}</div>
+            <sc-for list="{{ serviceQuestions }}" as="q" hint-placeholder-count="2">
+              <div>
+                <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 6px;line-height:1.3;text-wrap:balance;">{{ q.title }}</h3>
+                <sc-if value="{{ q.hasSub }}" hint-placeholder-val="{{ false }}"><p style="color:#8990A0;font-size:14px;margin:0 0 4px;">{{ q.sub }}</p></sc-if>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px;">
+                  <sc-for list="{{ q.options }}" as="opt" hint-placeholder-count="3"><button data-key="{{ q.key }}" data-value="{{ opt.value }}" onClick="{{ onQuestionClick }}" style="{{ opt.style }}"><span style="display:flex;flex-direction:column;gap:5px;padding-right:8px;"><span style="font-weight:700;font-size:14.5px;line-height:1.3;">{{ opt.label }}</span><sc-if value="{{ opt.hasSub }}" hint-placeholder-val="{{ false }}"><span style="font-weight:500;font-size:12.5px;color:#8990A0;line-height:1.4;">{{ opt.sub }}</span></sc-if></span><span style="{{ opt.markStyle }}"></span></button></sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.35rem;margin:0 0 16px;">Gde da Vas dobijemo?</h3>
+            <div style="border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:16px 18px;margin-bottom:22px;">
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Vaša procena</div>
+              <div style="color:#EBEDEF;font-size:14.5px;margin-bottom:4px;">{{ summaryVehicle }}</div>
+              <div style="color:#99A0A8;font-size:13.5px;">{{ summaryFocus }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <div><label style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Ime</label><input type="text" value="{{ name }}" onInput="{{ onNameInput }}" placeholder="Vaše ime" style="width:100%;background:#0B0C0F;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px;color:#EBEDEF;font-size:15px;outline:none;" style-focus="border-color:var(--accent);"></div>
+              <div><label style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Telefon</label><input type="tel" value="{{ phone }}" onInput="{{ onPhoneInput }}" placeholder="06x xxx xxxx" style="width:100%;background:#0B0C0F;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px;color:#EBEDEF;font-size:15px;outline:none;" style-focus="border-color:var(--accent);"></div>
+              <div><label style="display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#868E97;margin-bottom:8px;">Slike vozila (opciono)</label><label style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:22px;border:1px dashed rgba(255,255,255,0.22);border-radius:10px;color:#AEB4BB;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;" style-hover="border-color:var(--accent);color:var(--accent-strong);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M5 12 H19"></path></svg>Dodaj slike<input type="file" accept="image/*" multiple onChange="{{ onPhotoInput }}" style="display:none;"></label><p style="color:#7A828C;font-size:12.5px;margin:10px 0 0;">Dodajte par fotografija laka i enterijera pa procenu damo tačniju, još pre nego što dođete.</p>{{ photoThumbs }}</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:32px;">
+            <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ onBack }}" style="background:transparent;border:1px solid rgba(255,255,255,0.16);color:#AEB4BB;padding:13px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .25s ease,color .25s ease,transform .25s ease;" style-hover="border-color:var(--accent);color:var(--accent-strong);transform:translateY(-2px);">Nazad</button></sc-if>
+            <div style="flex:1;"></div>
+            <button onClick="{{ onPrimary }}" style="{{ primaryStyle }}" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(var(--accent-rgb),0.55);filter:brightness(1.06);">{{ primaryLabel }}</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isSubmitted }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:8px 0;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:20px;"><circle cx="12" cy="12" r="9"></circle><path d="M8 12 L11 15 L16 9"></path></svg>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.5rem;margin:0 0 10px;">Hvala, {{ resultName }}.</h3>
+            <p style="color:#A3AAB2;margin:0 auto 28px;max-width:46ch;">Javljamo se na {{ phone }} vrlo brzo, sa procenom za vaše vozilo i dogovorom oko termina.</p>
+            <div style="text-align:left;border:1px solid rgba(var(--accent-rgb),0.3);background:rgba(var(--accent-rgb),0.06);border-radius:12px;padding:24px 26px;max-width:480px;margin:0 auto 28px;">
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Predlog za tvoje vozilo</div>
+              <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:14px;">{{ summaryVehicle }}</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:16px;border:1px solid rgba(var(--accent-rgb),0.4);border-radius:10px;background:rgba(var(--accent-rgb),0.08);">
+                <div style="width:38px;height:38px;border-radius:9px;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L15 8.5 L22 9.3 L17 14 L18.2 21 L12 17.6 L5.8 21 L7 14 L2 9.3 L9 8.5 Z"></path></svg></div>
+                <div><div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.05rem;line-height:1.15;">Preporučeni paket · {{ recPkgName }}</div><div style="color:#99A0A8;font-size:12.5px;margin-top:2px;">{{ recPkgTagline }}</div></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px;">
+                <sc-for list="{{ recItems }}" as="item" hint-placeholder-count="3">
+                  <div style="display:flex;gap:10px;align-items:flex-start;color:#D3D8DD;font-size:14.5px;"><span style="color:var(--accent);font-weight:900;line-height:1.5;">/</span><span>{{ item.text }}</span></div>
+                </sc-for>
+              </div>
+              <p style="color:#99A0A8;font-size:13.5px;margin:0;line-height:1.55;">{{ recNote }}</p>
+            </div>
+            <button onClick="{{ onReset }}" style="background:transparent;border:1px solid rgba(255,255,255,0.16);color:#AEB4BB;padding:13px 24px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .25s ease,color .25s ease,transform .25s ease;" style-hover="border-color:var(--accent);color:var(--accent-strong);transform:translateY(-2px);">Pošaljite još jedno vozilo</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOKACIJA -->
+  <div id="lokacijaC" data-reveal style="scroll-margin-top:80px;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(40px,6vw,64px);align-items:stretch;">
+        <div style="position:relative;align-self:stretch;min-height:clamp(320px,42vw,460px);border-radius:16px;border:1px solid rgba(255,255,255,0.09);overflow:hidden;background:#0D1015;">
+          <iframe title="APEX Detailing Studio, Omladinskih brigada 33a, Beograd" src="https://www.google.com/maps?q=Omladinskih%20brigada%2033a%2C%20Beograd%2011000&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block;"></iframe>
+        </div>
+        <div>
+          <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Gde radimo &middot; Novi Beograd</div>
+          <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.6vw,2.9rem);line-height:1.04;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 16px;">Studio napravljen za detailing</h2>
+          <p style="color:#A3AAB2;max-width:52ch;margin:0 0 30px;">Od dubinskog pranja enterijera, preko poliranja i keramike, do restauracije farova, svaki posao radimo u zatvorenom studiju, sa vremenom i uslovima koje auto zaslužuje.</p>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div style="display:flex;gap:18px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.09);"><span style="font-family:'Archivo',sans-serif;font-weight:700;color:var(--accent);font-size:14px;padding-top:1px;">01</span><div><div style="font-weight:700;margin-bottom:4px;">Sterilan prostor bez prašine</div><p style="color:#8990A0;font-size:14px;margin:0;">Filtriran vazduh, ništa ne pada na sveže očišćene i ispolirane površine.</p></div></div>
+            <div style="display:flex;gap:18px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.09);"><span style="font-family:'Archivo',sans-serif;font-weight:700;color:var(--accent);font-size:14px;padding-top:1px;">02</span><div><div style="font-weight:700;margin-bottom:4px;">Stabilna temperatura i vlažnost</div><p style="color:#8990A0;font-size:14px;margin:0;">Keramika, folije i polir traže uslove koji se ne menjaju.</p></div></div>
+            <div style="display:flex;gap:18px;padding:18px 0;border-top:1px solid rgba(255,255,255,0.09);border-bottom:1px solid rgba(255,255,255,0.09);"><span style="font-family:'Archivo',sans-serif;font-weight:700;color:var(--accent);font-size:14px;padding-top:1px;">03</span><div><div style="font-weight:700;margin-bottom:4px;">Profesionalna inspekcijska svetla</div><p style="color:#8990A0;font-size:14px;margin:0;">Pod jakim svetlom vidimo svaki detalj, unutra i spolja.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div style="border-top:1px solid rgba(255,255,255,0.08);background:var(--surface-1);">
+    <div data-reveal style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) 24px;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;">Česta pitanja</div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3.2rem);line-height:1.02;letter-spacing:-0.02em;text-transform:uppercase;margin:0 0 clamp(36px,5vw,52px);">Pre nego što dođete</h2>
+      <div style="display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,0.09);">
+        <sc-for list="{{ faqOpts }}" as="item" hint-placeholder-count="4">
+          <div style="border-top:1px solid rgba(255,255,255,0.09);">
+            <button data-index="{{ item.index }}" onClick="{{ onFaqToggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;text-align:left;background:transparent;border:none;cursor:pointer;padding:24px 0;color:#EBEDEF;font-family:inherit;">
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:1.1rem;">{{ item.q }}</span>
+              <span style="{{ item.iconStyle }}">+</span>
+            </button>
+            <div style="{{ item.answerWrapStyle }}">
+              <div style="overflow:hidden;min-height:0;">
+                <p style="color:#99A0A8;font-size:14.5px;margin:0;text-wrap:pretty;padding:0 0 26px;max-width:64ch;transition:transform .35s ease .05s;transform:{{ item.answerShift }};">{{ item.a }}</p>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,72px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:36px;">
+      <div><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;">APEX</span><span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.2em;color:#868E97;text-transform:uppercase;">Detailing Studio</span></div><p style="color:#7A828C;font-size:14px;margin:0;max-width:36ch;">Poliranje, keramika i restauracija laka. Novi Beograd.</p></div>
+      <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Studio</div><div style="color:#AEB4BB;font-size:14px;line-height:2;">Omladinskih brigada 33a<br>Beograd 11000</div></div>
+      <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Kontakt</div><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><a href="tel:+381611234567" style="color:#AEB4BB;">061 123 4567</a><a href="mailto:kontakt@apexdetailing.rs" style="color:#AEB4BB;">kontakt@apexdetailing.rs</a><div style="display:flex;gap:14px;margin-top:8px;"><a href="https://instagram.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">TikTok</a></div></div></div>
+      <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Kreni</div><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><a href="#uslugeC" style="color:#AEB4BB;">Usluge</a><a href="#paketiC" style="color:#AEB4BB;">Paketi</a><a href="#galerijaC" style="color:#AEB4BB;">Galerija</a><a href="#lokacijaC" style="color:#AEB4BB;">Lokacija</a><a href="#kvizC" style="color:var(--accent);">Zakažite termin</a></div></div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);"><div style="max-width:1280px;margin:0 auto;padding:22px 24px;font-family:'Archivo',sans-serif;font-weight:500;font-size:11px;letter-spacing:0.06em;color:#5A626C;">© 2026 APEX Detailing Studio</div></div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Ledeno plava&quot;,&quot;options&quot;:[&quot;Ledeno plava&quot;,&quot;Topla jantar&quot;,&quot;Hromirana zelena&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tema sajta&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.statsRef = React.createRef();
+    this.state = { years: 0, vehicles: 0, services: 0, countDone: false, started: false, openFaq: -1, navOpen: false,
+      stepIndex: 0, submitted: false,
+      focus: [], makeModel: '', year: '', bodyType: null,
+      cleanState: null, cleanPets: null, cleanSeats: null,
+      polishLook: null, polishGoal: null,
+      protectLoc: null, protectLevel: null,
+      hlState: null, hlProtect: null,
+      glassIssue: null, wheelsPart: null,
+      photos: [], name: '', phone: '' };
+  }
+  componentDidMount() {
+    this.applyTheme();
+    const el = this.statsRef.current;
+    if (el && typeof IntersectionObserver !== 'undefined') {
+      this.io = new IntersectionObserver((entries) => { entries.forEach((e) => { if (e.isIntersecting && !this.state.started) { this.setState({ started: true }); this.runCount(); this.io.disconnect(); } }); }, { threshold: 0.4 });
+      this.io.observe(el);
+    } else { this.runCount(); }
+    requestAnimationFrame(() => { this.initReveal(); this.initSliders(); this.initSmoothScroll(); this.initParallax(); this.initHotspots(); });
+  }
+  componentWillUnmount() { if (this.io) this.io.disconnect(); if (this.revealIO) this.revealIO.disconnect(); (this.sliderCleanups || []).forEach((f) => f()); if (this.smoothCleanup) this.smoothCleanup(); if (this.parallaxCleanup) this.parallaxCleanup(); if (this.hotspotCleanup) this.hotspotCleanup(); if (this.raf) cancelAnimationFrame(this.raf); }
+  themeVars() {
+    return {
+      'Ledeno plava': { '--accent':'#00A3FF','--accent-strong':'#28B4FF','--accent-ink':'#00131F','--accent-rgb':'0,163,255' },
+      'Topla jantar': { '--accent':'#E0A63C','--accent-strong':'#F2BE59','--accent-ink':'#241700','--accent-rgb':'224,166,60' },
+      'Hromirana zelena': { '--accent':'#18B79A','--accent-strong':'#3FD4B7','--accent-ink':'#04231D','--accent-rgb':'24,183,154' }
+    };
+  }
+  applyTheme() {
+    if (typeof document === 'undefined' || !document.body) return;
+    const map = this.themeVars();
+    const t = map[this.props.theme] || map['Ledeno plava'];
+    Object.keys(t).forEach((k) => document.body.style.setProperty(k, t[k]));
+  }
+  componentDidUpdate(prev) { if (!prev || prev.theme !== this.props.theme) this.applyTheme(); }
+  runCount() {
+    const dur = 3000, start = performance.now();
+    const tick = (now) => { const t = Math.min((now - start) / dur, 1), e = 1 - Math.pow(1 - t, 6); this.setState({ years: Math.round(8 * e), vehicles: Math.round(12000 * e), services: Math.round(20 * e), countDone: t >= 1 }); if (t < 1) this.raf = requestAnimationFrame(tick); };
+    this.raf = requestAnimationFrame(tick);
+  }
+  initSmoothScroll() {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let target = window.scrollY || 0, current = target, ticking = false;
+    const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const loop = () => {
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.4) { current = target; ticking = false; window.scrollTo({ top: current, behavior: 'instant' }); return; }
+      window.scrollTo({ top: current, behavior: 'instant' });
+      requestAnimationFrame(loop);
+    };
+    const onWheel = (e) => {
+      if (e.ctrlKey) return;
+      const mult = e.deltaMode === 1 ? 16 : (e.deltaMode === 2 ? window.innerHeight : 1);
+      e.preventDefault();
+      target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * mult));
+      if (!ticking) { ticking = true; requestAnimationFrame(loop); }
+    };
+    const onScroll = () => { if (!ticking) { target = window.scrollY; current = window.scrollY; } };
+    const onResize = () => { target = window.scrollY; current = window.scrollY; };
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    this.smoothCleanup = () => { window.removeEventListener('wheel', onWheel); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); };
+  }
+  initReveal() {
+    const els = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+    if (!els.length) return;
+    const vh = window.innerHeight || 800;
+    if (typeof IntersectionObserver === 'undefined') { els.forEach((e) => e.classList.add('rv-in')); return; }
+    this.revealIO = new IntersectionObserver((ents) => { ents.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('rv-in'); this.revealIO.unobserve(en.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+    els.forEach((e) => { const r = e.getBoundingClientRect(); if (r.top < vh * 0.92) { e.classList.add('rv-in'); } else { this.revealIO.observe(e); } });
+  }
+  initHotspots() {
+    const dots = Array.prototype.slice.call(document.querySelectorAll('[data-hotspot]'));
+    if (!dots.length) return;
+    const closeAll = (except) => dots.forEach((d) => { if (d !== except) d.classList.remove('hs-open'); });
+    dots.forEach((d) => {
+      const onClick = (e) => { e.preventDefault(); const open = d.classList.contains('hs-open'); closeAll(d); if (!open) d.classList.add('hs-open'); else d.classList.remove('hs-open'); };
+      d.addEventListener('click', onClick);
+    });
+    const onDocPointer = (e) => { if (!e.target.closest('[data-hotspot]')) closeAll(null); };
+    document.addEventListener('pointerdown', onDocPointer, true);
+    this.hotspotCleanup = () => document.removeEventListener('pointerdown', onDocPointer, true);
+  }
+  initParallax() {
+    const hero = document.getElementById('topC');
+    if (!hero || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    let ticking = false;
+    const upd = () => { ticking = false; hero.style.backgroundPositionY = (window.scrollY * 0.35) + 'px'; };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    upd();
+    this.parallaxCleanup = () => window.removeEventListener('scroll', onScroll);
+  }
+  initStickyCta() { /* removed */ }
+  initSliders() {
+    const boxes = Array.prototype.slice.call(document.querySelectorAll('[data-baslider]'));
+    this.sliderCleanups = this.sliderCleanups || [];
+    boxes.forEach((box, bi) => {
+      const before = box.querySelector('[data-ba-before]');
+      const line = box.querySelector('[data-ba-line]');
+      const grip = box.querySelector('[data-ba-grip]');
+      if (!before || !line) return;
+      let dragging = false;
+      const clamp = (v) => Math.max(6, Math.min(94, v));
+      const setPct = (pct) => { pct = clamp(pct); before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)'; line.style.left = pct + '%'; if (grip) grip.style.left = pct + '%'; };
+      const fromEvent = (e) => { const r = box.getBoundingClientRect(); const cx = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX; return (cx - r.left) / r.width * 100; };
+      const down = (e) => { dragging = true; hinted = true; before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; setPct(fromEvent(e)); if (e.cancelable) e.preventDefault(); };
+      const move = (e) => { if (dragging) setPct(fromEvent(e)); };
+      const up = () => { dragging = false; };
+      box.addEventListener('pointerdown', down);
+      window.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', up);
+      setPct(50);
+      let hinted = false;
+      const clearHintT = () => { before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; };
+      const runHint = () => {
+        if (hinted || dragging) return; hinted = true;
+        const ease = '.7s cubic-bezier(.4,0,.2,1)';
+        before.style.transition = 'clip-path ' + ease; line.style.transition = 'left ' + ease; if (grip) grip.style.transition = 'left ' + ease;
+        setPct(24); setTimeout(() => setPct(50), 780); setTimeout(clearHintT, 1600);
+      };
+      if (bi === 0 && typeof IntersectionObserver !== 'undefined' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        const hio = new IntersectionObserver((ents) => { ents.forEach((en) => { if (en.isIntersecting) { setTimeout(runHint, 120); hio.disconnect(); } }); }, { threshold: 0.15 });
+        hio.observe(box);
+        this.sliderCleanups.push(() => hio.disconnect());
+      }
+      this.sliderCleanups.push(() => { box.removeEventListener('pointerdown', down); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); });
+    });
+  }
+  optStyle(active) { return { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', width: '100%', textAlign: 'left', padding: '18px 20px', borderRadius: '10px', border: active ? '1px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)', background: active ? 'rgba(var(--accent-rgb),0.10)' : 'rgba(255,255,255,0.01)', color: active ? '#EBEDEF' : '#C2C8CF', cursor: 'pointer', fontSize: '15px', fontFamily: 'inherit', fontWeight: 600, lineHeight: 1.3 }; }
+  markStyle(active) { return { width: '16px', height: '16px', borderRadius: '50%', flexShrink: 0, border: active ? '5px solid var(--accent)' : '2px solid rgba(255,255,255,0.28)' }; }
+  focusStyle(active) { return { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', width: '100%', textAlign: 'left', padding: '18px 20px', borderRadius: '10px', border: active ? '1px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)', background: active ? 'rgba(var(--accent-rgb),0.10)' : 'rgba(255,255,255,0.01)', color: active ? '#EBEDEF' : '#C2C8CF', cursor: 'pointer', fontFamily: 'inherit', lineHeight: 1.3 }; }
+  richStyle(active, align) { return { display: 'flex', alignItems: align || 'center', justifyContent: 'space-between', gap: '12px', width: '100%', textAlign: 'left', padding: '18px 20px', borderRadius: '10px', border: active ? '1px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)', background: active ? 'rgba(var(--accent-rgb),0.10)' : 'rgba(255,255,255,0.01)', color: active ? '#EBEDEF' : '#C2C8CF', cursor: 'pointer', fontFamily: 'inherit', lineHeight: 1.3 }; }
+  checkMark(active) { return { width: '18px', height: '18px', borderRadius: '5px', flexShrink: 0, marginTop: '2px', border: active ? '1px solid var(--accent)' : '2px solid rgba(255,255,255,0.28)', background: active ? 'var(--accent)' : 'transparent' }; }
+  buildOpts(list, selected, multi) {
+    return list.map((l) => {
+      const active = multi ? selected.indexOf(l) !== -1 : selected === l;
+      return { label: l, style: this.optStyle(active), markStyle: multi ? this.checkMark(active) : this.markStyle(active) };
+    });
+  }
+  toggleMulti(key, val) { this.setState((p) => { const arr = p[key].slice(); const i = arr.indexOf(val); if (i >= 0) arr.splice(i, 1); else arr.push(val); const o = {}; o[key] = arr; return o; }); }
+  setSingle(key, val) { const o = {}; o[key] = val; this.setState(o); }
+  serviceHeads() {
+    return { cleaning: 'Čišćenje i dubinsko pranje', polish: 'Poliranje i uklanjanje ogrebotina', protect: 'Keramička zaštita i folije', headlights: 'Poliranje i restauracija farova', glass: 'Tretmani i zaštita stakala', wheels: 'Detailing felni i motora' };
+  }
+  serviceDefs() {
+    return {
+      cleaning: [
+        { key: 'cleanState', title: 'U kakvom je stanju enterijer?', opts: ['Blago zaprljan', 'Umereno zaprljan', 'Jako zaprljan'] },
+        { key: 'cleanPets', title: 'Da li u automobilu vozite kućne ljubimce?', opts: ['Da', 'Ne'] },
+        { key: 'cleanSeats', title: 'Kakva su sedišta u automobilu?', opts: ['Koža', 'Tekstil', 'Kombinovano'] }
+      ],
+      polish: [
+        { key: 'polishLook', title: 'Kakve su ogrebotine na laku?', opts: ['Sitne, površinske', 'Umerene', 'Duboke'] },
+        { key: 'polishGoal', title: 'Kakav rezultat želite?', opts: ['Osvežavanje sjaja', 'Potpuna korekcija laka'] }
+      ],
+      protect: [
+        { key: 'protectLoc', title: 'Gde je vozilo najčešće parkirano?', opts: ['U garaži', 'Napolju'] },
+        { key: 'protectLevel', title: 'Kakvu zaštitu tražite?', opts: ['Vosak', 'Keramički premaz', 'PPF folija', 'Nisam siguran, treba mi predlog'] }
+      ],
+      headlights: [
+        { key: 'hlState', title: 'Kakvo je stanje farova?', opts: ['Blago zamućeni', 'Jako matirani', 'Ispucao zaštitni lak'] },
+        { key: 'hlProtect', title: 'Koju zaštitu želite?', opts: ['Keramički premaz', 'PPF folija', 'Bez zaštite'] }
+      ],
+      glass: [
+        { key: 'glassIssue', title: 'Glavni problem sa staklima?', opts: ['Slaba vidljivost po kiši', 'Naslage kamenca i fleke', 'Oboje'] }
+      ],
+      wheels: [
+        { key: 'wheelsPart', title: 'Šta želite da obradimo?', opts: ['Motorni prostor', 'Felne', 'Kompletan paket'] }
+      ]
+    };
+  }
+  screens() {
+    const f = this.state.focus, arr = ['focus', 'vehicle'];
+    if (f.indexOf('Čišćenje i dubinsko pranje') >= 0) arr.push('cleaning');
+    if (f.indexOf('Poliranje i uklanjanje ogrebotina') >= 0) arr.push('polish');
+    if (f.indexOf('Keramička zaštita i folije') >= 0) arr.push('protect');
+    if (f.indexOf('Poliranje i restauracija farova') >= 0) arr.push('headlights');
+    if (f.indexOf('Tretmani i zaštita stakala') >= 0) arr.push('glass');
+    if (f.indexOf('Detailing felni i motora') >= 0) arr.push('wheels');
+    arr.push('contact');
+    return arr;
+  }
+  screenValid(screen) {
+    const s = this.state;
+    if (screen === 'focus') return s.focus.length > 0;
+    if (screen === 'vehicle') return !!(s.makeModel.trim() && s.year.trim());
+    if (screen === 'contact') return !!(s.name.trim() && s.phone.trim());
+    const defs = this.serviceDefs();
+    if (defs[screen]) return defs[screen].every((q) => !!s[q.key]);
+    return true;
+  }
+  recommendation() {
+    const s = this.state, has = (x) => s.focus.indexOf(x) >= 0;
+    const items = [];
+    let score = 0;
+
+    if (has('Čišćenje i dubinsko pranje')) {
+      if (s.cleanState === 'Jako zaprljan') { items.push('Dubinsko pranje enterijera sa tretmanom protiv mirisa i buđi'); score += 2; }
+      else if (s.cleanState === 'Umereno zaprljan') { items.push('Dubinsko hemijsko pranje sedišta i tepiha'); score += 1; }
+      else { items.push('Osvežavanje enterijera i detaljno usisavanje'); }
+      if (s.cleanPets && s.cleanPets.indexOf('Da') === 0) { items.push('Uklanjanje dlaka ljubimaca iz tepiha i sedišta (dodatni rad)'); score += 1; }
+      if (s.cleanSeats === 'Koža') items.push('Nega i hidratacija kože');
+      else if (s.cleanSeats === 'Kombinovano') items.push('Poseban tretman kože i Alcantare');
+      else if (s.cleanSeats === 'Tekstil') items.push('Dubinsko pranje tekstilnih sedišta');
+    }
+
+    if (has('Poliranje i uklanjanje ogrebotina')) {
+      const deep = s.polishGoal === 'Potpuna korekcija laka' || s.polishLook === 'Duboke' || s.polishLook === 'Umerene';
+      if (deep) { items.push('Višeslojna korekcija laka (uklanjanje preko 99% ogrebotina)'); score += 3; }
+      else { items.push('Jednoslojno poliranje i vraćanje visokog sjaja'); score += 1; }
+    }
+
+    if (has('Keramička zaštita i folije')) {
+      if (s.protectLevel === 'PPF folija') { items.push('PPF folija · maksimalna fizička zaštita laka'); score += 3; }
+      else if (s.protectLevel === 'Keramički premaz') { items.push('Keramička zaštita (2 do 5 godina zaštite)'); score += 2; }
+      else if (s.protectLevel === 'Vosak') { items.push('Zaštita voskom (do 6 meseci sjaja i lakšeg pranja)'); }
+      else { items.push('Predlog zaštite laka nakon pregleda (vosak, keramika ili PPF)'); score += 1; }
+      if (s.protectLoc === 'Napolju') { items.push('Auto stoji napolju · preporučujemo trajniju zaštitu sa UV otpornošću'); score += 1; }
+    }
+
+    if (has('Poliranje i restauracija farova')) {
+      if (s.hlState === 'Ispucao zaštitni lak') { items.push('Restauracija farova sa skidanjem ispucanog fabričkog laka'); score += 2; }
+      else if (s.hlState === 'Jako matirani') { items.push('Restauracija matiranih i neprozirnih farova'); score += 1; }
+      else { items.push('Poliranje zamućenih i požutelih farova'); }
+      if (s.hlProtect === 'Keramički premaz') items.push('Keramička zaštita farova (do 12 meseci)');
+      else if (s.hlProtect === 'PPF folija') { items.push('PPF folija za farove · trajna UV zaštita'); score += 1; }
+    }
+
+    if (has('Tretmani i zaštita stakala')) {
+      if (s.glassIssue === 'Naslage kamenca i fleke') items.push('Skidanje kamenca i fleka sa stakala');
+      else if (s.glassIssue === 'Oboje') items.push('Skidanje kamenca i hidrofobna zaštita stakala ("antikiša")');
+      else items.push('Hidrofobna zaštita stakala ("antikiša") za bolju vidljivost');
+    }
+
+    if (has('Detailing felni i motora')) {
+      if (s.wheelsPart === 'Motorni prostor') items.push('Detaljno pranje i zaštita motornog prostora');
+      else if (s.wheelsPart === 'Felne') items.push('Dubinsko čišćenje i zaštita felni');
+      else if (s.wheelsPart === 'Kompletan paket') { items.push('Kompletan detailing felni i motornog prostora'); score += 1; }
+    }
+
+    if (!items.length) items.push('Procena i predlog tretmana nakon pregleda vozila');
+
+    const restauracija = score >= 4 || (has('Poliranje i restauracija farova') && s.hlState === 'Ispucao zaštitni lak') || (has('Poliranje i uklanjanje ogrebotina') && s.polishGoal === 'Potpuna korekcija laka' && has('Čišćenje i dubinsko pranje'));
+    const puna = score >= 2 || s.focus.length >= 3 || s.protectLevel === 'Keramički premaz' || s.protectLevel === 'PPF folija';
+    let pkg;
+    if (restauracija) pkg = { name: 'Restauracija', tagline: 'Korekcija laka, dubinski enterijer i restauracija farova' };
+    else if (puna) pkg = { name: 'Puna zaštita', tagline: 'Poliranje + keramika i zaštita stakala' };
+    else pkg = { name: 'Osnovni sjaj', tagline: 'Pranje, jednoslojni polir i zaštita voskom' };
+
+    return { pkg: pkg, items: items.map((t) => ({ text: t })), note: this.recNote() };
+  }
+  recNote() {
+    const s = this.state;
+    if (s.cleanPets && s.cleanPets.indexOf('Da') === 0) return 'Dlake ljubimaca traže sate dodatnog rada i posebne alate, uračunavamo ih u procenu.';
+    if (s.protectLevel === 'Keramički premaz' || s.protectLevel === 'PPF folija') return 'Pre zaštite lak mora biti ispoliran i dekontaminiran, inače se greške zaključaju ispod sloja.';
+    if (s.protectLoc === 'Napolju') return 'Pošto auto stoji napolju, trajnija zaštita se dugoročno više isplati.';
+    return 'Okvirnu cenu i vreme dajemo na pozivu nakon kviza, a konačnu potvrđujemo pre početka rada.';
+  }
+  renderVals() {
+    const s = this.state;
+    const screens = this.screens();
+    const idx = Math.min(s.stepIndex, screens.length - 1);
+    const screen = screens[idx];
+    const valid = this.screenValid(screen);
+    const isLast = idx === screens.length - 1;
+
+    const parts = [];
+    if (s.makeModel.trim()) parts.push(s.makeModel.trim());
+    if (s.year.trim()) parts.push(s.year.trim());
+    if (s.bodyType) parts.push(s.bodyType.toLowerCase());
+    const summaryVehicle = parts.length ? parts.join(', ') : 'Vaše vozilo';
+    const summaryFocus = s.focus.length ? s.focus.join(' • ') : 'Procena po dogovoru';
+
+    const defs = this.serviceDefs();
+    const heads = this.serviceHeads();
+    const isService = !!defs[screen] && !s.submitted;
+    const serviceHead = isService ? heads[screen] : '';
+    const serviceQuestions = isService ? defs[screen].map((q) => {
+      const anySub = q.opts.some((o) => typeof o !== 'string' && o.sub);
+      const options = q.opts.map((o) => {
+        const label = typeof o === 'string' ? o : o.v;
+        const sub = typeof o === 'string' ? '' : (o.sub || '');
+        const active = s[q.key] === label;
+        return { value: label, label: label, sub: sub, hasSub: !!sub, style: this.richStyle(active, anySub ? 'flex-start' : 'center'), markStyle: this.markStyle(active) };
+      });
+      return { key: q.key, title: q.title, sub: q.sub || '', hasSub: !!q.sub, options: options };
+    }) : [];
+    const rec = this.recommendation();
+
+    const faqData = [
+      { q: 'Koliko dugo auto ostaje kod vas?', a: 'Zavisi od usluge. Osveženje ili dubinsko pranje enterijera obično je gotovo isti dan, dok poliranje i keramika traju dva do tri dana. Tačan rok vam kažemo čim vidimo stanje vozila.' },
+      { q: 'Koliko traje keramička zaštita?', a: 'Uz normalno održavanje drži godinama i olakšava svako pranje, jer se prljavština i voda teže zadržavaju. Ne morate da voskirate posle svakog pranja.' },
+      { q: 'Da li poliranje stanjuje lak?', a: 'Merimo debljinu laka pre rada i skidamo samo onoliko koliko je potrebno da ogrebotina nestane. Radimo najblažom metodom koja daje rezultat, nikada agresivnije nego što vozilo traži.' },
+      { q: 'Da li radite i starija ili jako zapuštena vozila?', a: 'Da. Svejedno je da li je auto nov ili godinama zanemaren. Procenimo realno stanje i kažemo vam šta ima smisla uraditi, bez obećanja koja ne možemo da ispunimo.' },
+      { q: 'Koliko košta?', a: 'Zavisi od stanja vozila i onoga što želite da postignete. Popunite kviz i dobijate predlog tretmana, a okvirnu cenu vam kažemo na pozivu. Konačnu cenu potvrđujemo pre nego što bilo šta počnemo, bez naknadnih iznenađenja.' },
+      { q: 'Šta ako mi se rezultat ne dopadne?', a: 'Auto ne preuzimate dok ga zajedno ne pregledamo. Ako nešto nije kako treba, ispravljamo to isti dan, bez doplate.' }
+    ];
+    const faqIcon = (open) => ({ fontFamily: 'Archivo, sans-serif', fontWeight: 400, fontSize: '26px', lineHeight: 1, flexShrink: 0, color: open ? 'var(--accent)' : '#868E97', transform: open ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'transform .2s ease, color .2s ease' });
+
+    return {
+      faqOpts: faqData.map((f, i) => { const open = s.openFaq === i; return { q: f.q, a: f.a, index: i, open: open, iconStyle: faqIcon(open), answerWrapStyle: { display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', opacity: open ? 1 : 0, transition: 'grid-template-rows .38s cubic-bezier(.4,0,.2,1), opacity .3s ease' }, answerShift: open ? 'translateY(0)' : 'translateY(-6px)' }; }),
+      onFaqToggle: (e) => { const i = Number(e.currentTarget.dataset.index); this.setState((p) => ({ openFaq: p.openFaq === i ? -1 : i })); },
+      statsRef: this.statsRef, years: String(s.years),
+      navOpen: s.navOpen, navClosed: !s.navOpen,
+      toggleNav: () => this.setState((p) => ({ navOpen: !p.navOpen })),
+      closeNav: () => this.setState({ navOpen: false }),
+      vehicles: String(s.vehicles).replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
+      services: String(s.services),
+
+      notSubmitted: !s.submitted, isSubmitted: s.submitted,
+      stepLabel: 'Korak ' + (idx + 1) + ' od ' + Math.max(screens.length, 4),
+      progressWidth: Math.round((idx + 1) / Math.max(screens.length, 4) * 100) + '%',
+      isFocus: screen === 'focus' && !s.submitted,
+      isVehicle: screen === 'vehicle' && !s.submitted,
+      isService: isService,
+      serviceHead: serviceHead,
+      serviceQuestions: serviceQuestions,
+      isContact: screen === 'contact' && !s.submitted,
+
+      focusOpts: [
+        { label: 'Čišćenje i dubinsko pranje', sub: 'Enterijer, eksterijer ili kompletno osvežavanje vozila' },
+        { label: 'Poliranje i uklanjanje ogrebotina', sub: 'Vraćanje sjaja, uklanjanje matiranosti i korekcija laka' },
+        { label: 'Keramička zaštita i folije', sub: 'Dugotrajna zaštita laka, ekstremni sjaj i PPF folije' },
+        { label: 'Poliranje i restauracija farova', sub: 'Sređivanje žutih i matiranih farova za bolju vidljivost' },
+        { label: 'Tretmani i zaštita stakala', sub: 'Hidrofobni premazi "antikiša" i skidanje kamenca' },
+        { label: 'Detailing felni i motora', sub: 'Dubinsko skidanje kočione prašine, pranje i zaštita motora' }
+      ].map((o) => { const active = s.focus.indexOf(o.label) >= 0; return { label: o.label, sub: o.sub, style: this.focusStyle(active), markStyle: this.checkMark(active) }; }),
+      bodyOpts: this.buildOpts(['Mali gradski auto', 'Limuzina / Karavan', 'SUV / Džip / Kombi'], s.bodyType, false),
+
+      onFocusClick: (e) => this.toggleMulti('focus', e.currentTarget.dataset.value),
+      onBodyClick: (e) => this.setSingle('bodyType', e.currentTarget.dataset.value),
+      onQuestionClick: (e) => this.setSingle(e.currentTarget.dataset.key, e.currentTarget.dataset.value),
+
+      makeModel: s.makeModel, year: s.year, name: s.name, phone: s.phone,
+      onMakeModelInput: (e) => this.setSingle('makeModel', e.target.value),
+      onYearInput: (e) => this.setSingle('year', e.target.value),
+      onNameInput: (e) => this.setSingle('name', e.target.value),
+      onPhoneInput: (e) => this.setSingle('phone', e.target.value),
+
+      photoThumbs: s.photos.length ? React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(96px,1fr))', gap: '10px', marginTop: '16px' } },
+        s.photos.map((src, i) => React.createElement('div', { key: i, style: { position: 'relative', aspectRatio: '1', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' } },
+          React.createElement('img', { src: src, style: { width: '100%', height: '100%', objectFit: 'cover', display: 'block' } }),
+          React.createElement('button', { onClick: () => this.setState((p) => ({ photos: p.photos.filter((_, j) => j !== i) })), style: { position: 'absolute', top: '4px', right: '4px', width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: 'rgba(8,9,11,0.82)', color: '#fff', fontSize: '15px', lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '×')
+        ))
+      ) : null,
+      onPhotoInput: (e) => { const files = Array.prototype.slice.call(e.target.files || []); files.forEach((file) => { if (!file.type || file.type.indexOf('image/') !== 0) return; const reader = new FileReader(); reader.onload = () => { this.setState((p) => (p.photos.length >= 6 ? {} : { photos: p.photos.concat(reader.result) })); }; reader.readAsDataURL(file); }); e.target.value = ''; },
+
+      summaryVehicle: summaryVehicle, summaryFocus: summaryFocus,
+      showBack: idx > 0 && !s.submitted,
+      primaryLabel: isLast ? 'Pošaljite zahtev' : 'Dalje',
+      primaryStyle: { padding: '14px 28px', borderRadius: '8px', border: 'none', fontFamily: 'inherit', fontWeight: 700, fontSize: '15px', transition: 'transform .25s ease, background .25s ease, box-shadow .25s ease, filter .25s ease', cursor: valid ? 'pointer' : 'not-allowed', background: valid ? 'var(--accent)' : 'rgba(var(--accent-rgb),0.22)', color: valid ? 'var(--accent-ink)' : 'rgba(255,255,255,0.5)' },
+      onPrimary: () => { const sc = this.screens(); const i = Math.min(this.state.stepIndex, sc.length - 1); const cur = sc[i]; if (!this.screenValid(cur)) return; if (i === sc.length - 1) this.setState({ submitted: true }); else this.setState({ stepIndex: i + 1 }); },
+      onBack: () => this.setState((p) => ({ stepIndex: Math.max(0, p.stepIndex - 1) })),
+      onReset: () => this.setState({ stepIndex: 0, submitted: false, focus: [], makeModel: '', year: '', bodyType: null, cleanState: null, cleanPets: null, cleanSeats: null, polishLook: null, polishGoal: null, protectLoc: null, protectLevel: null, hlState: null, hlProtect: null, glassIssue: null, wheelsPart: null, photos: [], name: '', phone: '' }),
+      recItems: rec.items, recNote: rec.note, recPkgName: rec.pkg.name, recPkgTagline: rec.pkg.tagline, resultName: s.name.trim() || ''
+    };
+  }
+}
+</script>
+</body>
+</html>
