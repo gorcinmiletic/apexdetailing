@@ -72,7 +72,7 @@
       [data-gal-grid] > div > div:last-child > div { font-size: 13px !important; }
     }
     @media (min-width: 761px) { [data-nav-menu] { display: none !important; } }
-    @media (hover: none) {
+    @media (hover: none), (max-width: 760px) {
       [class*="scp"][class*="scp"]:hover {
         transform: none !important;
         box-shadow: none !important;
@@ -489,7 +489,7 @@
     <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,72px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:36px;">
       <div><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><span style="font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;">APEX</span><span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.2em;color:#868E97;text-transform:uppercase;">Detailing Studio</span></div><p style="color:#7A828C;font-size:14px;margin:0;max-width:36ch;">Poliranje, keramika i restauracija laka. Novi Beograd.</p></div>
       <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Studio</div><div style="color:#AEB4BB;font-size:14px;line-height:2;">Omladinskih brigada 33a<br>Beograd 11000</div></div>
-      <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Kontakt</div><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><a href="tel:+381611234567" style="color:#AEB4BB;">061 123 4567</a><a href="mailto:kontakt@apexdetailing.rs" style="color:#AEB4BB;">kontakt@apexdetailing.rs</a><div style="display:flex;gap:14px;margin-top:8px;"><a href="https://instagram.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">TikTok</a></div></div></div>
+      <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Kontakt</div><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><a href="tel:+381611234567" style="color:#AEB4BB;">061 123 4567</a><a href="/cdn-cgi/l/email-protection#9bf0f4f5effaf0efdbfaebfee3fffeeffaf2f7f2f5fcb5e9e8" style="color:#AEB4BB;"><span class="__cf_email__" data-cfemail="ef8480819b8e849baf8e9f8a978b8a9b8e8683868188c19d9c">[email&#160;protected]</span></a><div style="display:flex;gap:14px;margin-top:8px;"><a href="https://instagram.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Instagram</a><a href="https://facebook.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener" style="color:#AEB4BB;font-weight:600;" style-hover="color:var(--accent-strong);">TikTok</a></div></div></div>
       <div><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#868E97;margin-bottom:14px;">Kreni</div><div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><a href="#uslugeC" style="color:#AEB4BB;">Usluge</a><a href="#paketiC" style="color:#AEB4BB;">Paketi</a><a href="#galerijaC" style="color:#AEB4BB;">Galerija</a><a href="#lokacijaC" style="color:#AEB4BB;">Lokacija</a><a href="#kvizC" style="color:var(--accent);">Zakažite termin</a></div></div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,0.08);"><div style="max-width:1280px;margin:0 auto;padding:22px 24px;font-family:'Archivo',sans-serif;font-weight:500;font-size:11px;letter-spacing:0.06em;color:#5A626C;">© 2026 APEX Detailing Studio</div></div>
@@ -497,7 +497,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Ledeno plava&quot;,&quot;options&quot;:[&quot;Ledeno plava&quot;,&quot;Topla jantar&quot;,&quot;Hromirana zelena&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tema sajta&quot;}}">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Ledeno plava&quot;,&quot;options&quot;:[&quot;Ledeno plava&quot;,&quot;Topla jantar&quot;,&quot;Hromirana zelena&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tema sajta&quot;}}">
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -605,18 +605,19 @@ class Component extends DCLogic {
       const line = box.querySelector('[data-ba-line]');
       const grip = box.querySelector('[data-ba-grip]');
       if (!before || !line) return;
-      let dragging = false, decided = false, startX = 0, startY = 0;
+      let dragging = false, decided = false, active = false, startX = 0, startY = 0;
       const clamp = (v) => Math.max(6, Math.min(94, v));
       const setPct = (pct) => { pct = clamp(pct); before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)'; line.style.left = pct + '%'; if (grip) grip.style.left = pct + '%'; };
       const pt = (e) => (e.touches && e.touches[0]) ? e.touches[0] : e;
       const fromX = (cx) => { const r = box.getBoundingClientRect(); return (cx - r.left) / r.width * 100; };
       const clearHint = () => { before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; };
       const down = (e) => {
-        const p = pt(e); startX = p.clientX; startY = p.clientY; decided = false; dragging = false; hinted = true; clearHint();
+        const p = pt(e); startX = p.clientX; startY = p.clientY; decided = false; dragging = false; active = true; hinted = true; clearHint();
         // Mouse: begin dragging immediately; touch waits to learn the gesture direction.
         if (e.pointerType === 'mouse' || (!e.pointerType && !(e.touches))) { decided = true; dragging = true; setPct(fromX(startX)); }
       };
       const move = (e) => {
+        if (!active) return;
         const p = pt(e); const cx = p.clientX, cy = p.clientY;
         if (!decided) {
           const dx = Math.abs(cx - startX), dy = Math.abs(cy - startY);
@@ -627,7 +628,7 @@ class Component extends DCLogic {
         }
         if (dragging) { setPct(fromX(cx)); if (e.cancelable) e.preventDefault(); }
       };
-      const up = () => { dragging = false; decided = false; };
+      const up = () => { dragging = false; decided = false; active = false; };
       box.addEventListener('pointerdown', down);
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', up);
@@ -641,7 +642,7 @@ class Component extends DCLogic {
         before.style.transition = 'clip-path ' + ease; line.style.transition = 'left ' + ease; if (grip) grip.style.transition = 'left ' + ease;
         setPct(24); setTimeout(() => setPct(50), 780); setTimeout(clearHintT, 1600);
       };
-      if (bi === 0 && typeof IntersectionObserver !== 'undefined' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      if (bi === 0 && typeof IntersectionObserver !== 'undefined' && !(window.matchMedia && (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(max-width: 760px)').matches || window.matchMedia('(hover: none)').matches))) {
         const hio = new IntersectionObserver((ents) => { ents.forEach((en) => { if (en.isIntersecting) { setTimeout(runHint, 120); hio.disconnect(); } }); }, { threshold: 0.15 });
         hio.observe(box);
         this.sliderCleanups.push(() => hio.disconnect());
