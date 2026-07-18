@@ -72,6 +72,15 @@
       [data-gal-grid] > div > div:last-child > div { font-size: 13px !important; }
     }
     @media (min-width: 761px) { [data-nav-menu] { display: none !important; } }
+    @media (hover: none) {
+      [class*="scp"][class*="scp"]:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        background-image: none !important;
+        transition: none !important;
+      }
+      [data-pkg]:hover::after { display: none !important; }
+    }
   </style>
 </helmet>
 
@@ -233,7 +242,7 @@
       <p style="color:#A3AAB2;max-width:56ch;margin:0 0 clamp(40px,6vw,56px);">Prevucite klizač i vidite razliku na istom vozilu, pre i posle našeg rada. Bez filtera i montaže, samo drugačije svetlo i pažnja na svakom detalju.</p>
       <div data-gal-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-audi-posle.jpg" alt="Audi A6 posle poliranja" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-audi-pre.jpg" alt="Audi A6 pre poliranja" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -244,7 +253,7 @@
           <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">Audi A6 · korekcija laka</div></div>
         </div>
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-bmw-posle.jpg" alt="BMW Serija 3 posle keramike" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-bmw-pre.jpg" alt="BMW Serija 3 pre keramike" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -255,7 +264,7 @@
           <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">BMW Serija 3 · keramika</div></div>
         </div>
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-vw-posle.jpg" alt="VW Golf posle restauracije farova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-vw-pre.jpg" alt="VW Golf pre restauracije farova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -266,7 +275,7 @@
           <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">VW Golf · restauracija farova</div></div>
         </div>
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-mercedes-posle.jpg" alt="Mercedes C posle dubinskog enterijera" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-mercedes-pre.jpg" alt="Mercedes C pre dubinskog enterijera" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -277,7 +286,7 @@
           <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">Mercedes C · dubinski enterijer</div></div>
         </div>
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-bmwm5-posle.jpg" alt="BMW M5 posle čišćenja motornog prostora" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-bmwm5-pre.jpg" alt="BMW M5 pre čišćenja motornog prostora" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -288,7 +297,7 @@
           <div style="padding:18px 20px;"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;">BMW M5 · čišćenje motornog prostora</div></div>
         </div>
         <div style="border:1px solid rgba(255,255,255,0.09);border-radius:14px;overflow:hidden;">
-          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:none;user-select:none;">
+          <div data-baslider style="position:relative;height:clamp(230px,29vw,290px);overflow:hidden;cursor:ew-resize;touch-action:pan-y;user-select:none;">
             <img src="assets/gal-porsche-posle.jpg" alt="Porsche 718 Cayman posle čišćenja i zaštite felni" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
             <div data-ba-before style="position:absolute;inset:0;clip-path:inset(0 50% 0 0);">
               <img src="assets/gal-porsche-pre.jpg" alt="Porsche 718 Cayman pre čišćenja i zaštite felni" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" />
@@ -596,16 +605,33 @@ class Component extends DCLogic {
       const line = box.querySelector('[data-ba-line]');
       const grip = box.querySelector('[data-ba-grip]');
       if (!before || !line) return;
-      let dragging = false;
+      let dragging = false, decided = false, startX = 0, startY = 0;
       const clamp = (v) => Math.max(6, Math.min(94, v));
       const setPct = (pct) => { pct = clamp(pct); before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)'; line.style.left = pct + '%'; if (grip) grip.style.left = pct + '%'; };
-      const fromEvent = (e) => { const r = box.getBoundingClientRect(); const cx = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX; return (cx - r.left) / r.width * 100; };
-      const down = (e) => { dragging = true; hinted = true; before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; setPct(fromEvent(e)); if (e.cancelable) e.preventDefault(); };
-      const move = (e) => { if (dragging) setPct(fromEvent(e)); };
-      const up = () => { dragging = false; };
+      const pt = (e) => (e.touches && e.touches[0]) ? e.touches[0] : e;
+      const fromX = (cx) => { const r = box.getBoundingClientRect(); return (cx - r.left) / r.width * 100; };
+      const clearHint = () => { before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; };
+      const down = (e) => {
+        const p = pt(e); startX = p.clientX; startY = p.clientY; decided = false; dragging = false; hinted = true; clearHint();
+        // Mouse: begin dragging immediately; touch waits to learn the gesture direction.
+        if (e.pointerType === 'mouse' || (!e.pointerType && !(e.touches))) { decided = true; dragging = true; setPct(fromX(startX)); }
+      };
+      const move = (e) => {
+        const p = pt(e); const cx = p.clientX, cy = p.clientY;
+        if (!decided) {
+          const dx = Math.abs(cx - startX), dy = Math.abs(cy - startY);
+          if (dx < 8 && dy < 8) return;
+          decided = true;
+          dragging = dx > dy; // horizontal intent → drag slider; vertical → let the page scroll
+          if (!dragging) return;
+        }
+        if (dragging) { setPct(fromX(cx)); if (e.cancelable) e.preventDefault(); }
+      };
+      const up = () => { dragging = false; decided = false; };
       box.addEventListener('pointerdown', down);
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', up);
+      window.addEventListener('pointercancel', up);
       setPct(50);
       let hinted = false;
       const clearHintT = () => { before.style.transition = ''; line.style.transition = ''; if (grip) grip.style.transition = ''; };
@@ -620,7 +646,7 @@ class Component extends DCLogic {
         hio.observe(box);
         this.sliderCleanups.push(() => hio.disconnect());
       }
-      this.sliderCleanups.push(() => { box.removeEventListener('pointerdown', down); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); });
+      this.sliderCleanups.push(() => { box.removeEventListener('pointerdown', down); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', up); });
     });
   }
   optStyle(active) { return { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', width: '100%', textAlign: 'left', padding: '18px 20px', borderRadius: '10px', border: active ? '1px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)', background: active ? 'rgba(var(--accent-rgb),0.10)' : 'rgba(255,255,255,0.01)', color: active ? '#EBEDEF' : '#C2C8CF', cursor: 'pointer', fontSize: '15px', fontFamily: 'inherit', fontWeight: 600, lineHeight: 1.3 }; }
